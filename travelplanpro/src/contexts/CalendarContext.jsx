@@ -53,11 +53,7 @@ export const CalendarProvider = ({ children }) => {
     removeActivity
   };
 
-  return (
-    <CalendarContext.Provider value={value}>
-      {children}
-    </CalendarContext.Provider>
-  );
+  return <CalendarContext.Provider value={value}>{children}</CalendarContext.Provider>;
 };
 
 export const useCalendar = () => {

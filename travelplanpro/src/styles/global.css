@@ -121,11 +121,15 @@ body {
 }
 
 .calendar-event {
-  font-size: 0.875rem;
-  padding: calc(var(--spacing-base) / 2);
-  background-color: var(--color-overlay);
-  border-radius: calc(var(--border-radius) / 2);
-  margin-top: calc(var(--spacing-base) / 2);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+  background-color: var(--color-forest);
+  color: white;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Navigation */
@@ -186,4 +190,55 @@ body {
   color: var(--color-forest);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Styles pour le formulaire d'activité */
+.activity-form {
+  background-color: var(--color-white);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  max-width: 400px;
+  margin: 1rem auto;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--calendar-border);
+  border-radius: 4px;
+  font-family: var(--font-primary);
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.form-actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.form-actions button[type="submit"] {
+  background-color: var(--color-forest);
+  color: white;
+}
+
+.form-actions button[type="button"] {
+  background-color: var(--calendar-border);
 }

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCalendar } from "../contexts/CalendarContext";
+import ActivityForm from "./ActivityForm";
 
 const Calendar = () => {
+  const [showForm, setShowForm] = useState(false);
   const {
     currentDate,
     selectedDay,
@@ -43,6 +45,7 @@ const Calendar = () => {
         <button onClick={() => changeMonth(1)}>Suivant</button>
       </div>
 
+      {showForm && <ActivityForm onClose={() => setShowForm(false)} />}
       <div className="calendar-grid">
         {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map(day => (
           <div key={day} className="calendar-weekday">
@@ -56,14 +59,18 @@ const Calendar = () => {
           return (
             <div
               key={date.toString()}
-              onClick={() => setSelectedDay(formattedDate)}
+              onClick={() => {
+                setSelectedDay(formattedDate);
+                setShowForm(true);
+              }}
               className={`calendar-day ${isToday ? 'today' : ''} ${
                 selectedDay === formattedDate ? 'selected' : ''
               }`}
             >
               <div className="date-number">{date.getDate()}</div>
-              {activities[formattedDate]?.map((activity, idx) => (
-                <div key={idx} className="calendar-event">
+              {activities[formattedDate]?.map((activity) => (
+                <div key={activity.id} className="calendar-event" title={activity.description}>
+                  {activity.startTime && `${activity.startTime} - `}
                   {activity.title}
                 </div>
               ))}
