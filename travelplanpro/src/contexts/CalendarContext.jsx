@@ -1,46 +1,69 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const CalendarContext = createContext(null);
+const CalendarContext = createContext();
 
 export const CalendarProvider = ({ children }) => {
-  // États de base
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(new Date().toISOString().split('T')[0]);
   const [activities, setActivities] = useState({});
 
-  // Fonctions simples
-  const formatDate = (date) => date.toISOString().split('T')[0];
-  
-  const changeMonth = (increment) => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + increment));
+  const changeMonth = (offset) => {
+    const newDate = new Date(currentDate.setMonth(currentDate.getMonth() + offset));
+    setCurrentDate(newDate);
   };
 
-  const addActivity = (activity) => {
-    if (!selectedDay) return;
+  const formatDate = (date) => {
+    if (!date) return '';
+    try {
+      return date.toISOString().split('T')[0];
+    } catch (error) {
+      console.error('Date invalide:', date);
+      return '';
+    }
+  };
+
+  // Nouvelle fonction pour ajouter une activité
+  const addActivity = (date, activity) => {
     setActivities(prev => ({
       ...prev,
-      [selectedDay]: [...(prev[selectedDay] || []), activity]
+      [date]: [...(prev[date] || []), {
+        id: Date.now(), // ID unique
+        ...activity,
+        date
+      }]
     }));
   };
 
+  // Nouvelle fonction pour supprimer une activité
+  const removeActivity = (date, activityId) => {
+    setActivities(prev => ({
+      ...prev,
+      [date]: prev[date].filter(activity => activity.id !== activityId)
+    }));
+  };
+
+  const value = {
+    currentDate,
+    selectedDay,
+    activities,
+    setSelectedDay,
+    changeMonth,
+    formatDate,
+    addActivity,
+    removeActivity
+  };
+
   return (
-    <CalendarContext.Provider value={{
-      currentDate,
-      selectedDay,
-      activities,
-      setSelectedDay,
-      changeMonth,
-      addActivity,
-      formatDate
-    }}>
+    <CalendarContext.Provider value={value}>
       {children}
     </CalendarContext.Provider>
   );
 };
 
-// Hook simple pour utiliser le contexte
 export const useCalendar = () => {
   const context = useContext(CalendarContext);
-  if (!context) throw new Error('useCalendar must be used within CalendarProvider');
+  if (!context) {
+    throw new Error('useCalendar doit être utilisé dans un CalendarProvider');
+  }
   return context;
 };

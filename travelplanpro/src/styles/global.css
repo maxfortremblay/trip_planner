@@ -1,0 +1,189 @@
+/* Variables globales */
+:root {
+  --color-white: #FFFFFF;
+  --color-forest: #4C6257;
+  --color-gold: #C6A657;
+  --color-overlay: rgba(26, 26, 26, 0.05);
+  --color-border: #E5E5E5;
+  --spacing-base: 8px;
+  --border-radius: 8px;  /* Augmenté à 8px */
+  --transition-default: all 0.3s ease;
+  --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  /* Nouvelles variables pour la typographie */
+  --font-primary: 'Montserrat', sans-serif;
+  --font-size-date: 14px;
+  --font-size-weekday: 12px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  /* Couleurs */
+  --calendar-border: #E5E5E5;
+  --calendar-hover: #F8F8F8;
+  --calendar-selected: #4C6257;
+  --calendar-text: #333333;
+  
+  /* Espacements et transitions */
+  --spacing-base: 0.5rem;
+  --transition-speed: 0.2s;
+}
+
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-white);
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Classes utilitaires */
+.calendar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--spacing-base) * 2);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Style du calendrier */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-base);
+  background-color: var(--color-white);
+  padding: 16px;  /* Padding confortable */
+  border-radius: var(--border-radius);
+  transition: opacity var(--transition-speed) ease;
+}
+
+.calendar-grid.changing {
+  opacity: 0;
+}
+
+.calendar-header {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--calendar-text);
+  text-align: center;
+}
+
+.calendar-day {
+  position: relative;
+  padding: 1rem;
+  border: 1px solid var(--calendar-border);
+  border-radius: 0.5rem;
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+  background-color: var(--color-white);
+  font-size: var(--font-size-date);
+  font-weight: var(--font-weight-normal);
+}
+
+.calendar-day:hover {
+  background-color: var(--calendar-hover);
+  transform: translateY(-1px);
+}
+
+.calendar-day .date-number {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.calendar-day.selected {
+  border: 2px solid var(--calendar-selected);
+}
+
+.calendar-day.today {
+  border: 2px solid var(--color-gold);
+  font-weight: var(--font-weight-bold);
+  position: relative;
+}
+
+.calendar-day.today .date-number::after {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.25rem;
+  height: 0.25rem;
+  background-color: var(--calendar-selected);
+  border-radius: 50%;
+}
+
+.calendar-event {
+  font-size: 0.875rem;
+  padding: calc(var(--spacing-base) / 2);
+  background-color: var(--color-overlay);
+  border-radius: calc(var(--border-radius) / 2);
+  margin-top: calc(var(--spacing-base) / 2);
+}
+
+/* Navigation */
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-nav button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--calendar-border);
+  background-color: transparent;
+  border-radius: 0.25rem;
+  color: var(--calendar-text);
+  transition: all var(--transition-speed) ease;
+  font-size: 0.875rem;
+}
+
+.calendar-nav button:hover {
+  background-color: var(--calendar-hover);
+  border-color: var(--calendar-selected);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendar-grid {
+    gap: calc(var(--spacing-base) / 2);
+    padding: var(--spacing-base);
+  }
+
+  .calendar-day {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .calendar-event {
+    font-size: 0.75rem;
+  }
+  
+  .calendar-nav button {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  .calendar-header {
+    font-size: 1rem;
+  }
+}
+
+.calendar-weekday {
+  padding: 8px;
+  text-align: center;
+  font-size: var(--font-size-weekday);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-forest);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
